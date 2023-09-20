@@ -1,0 +1,25 @@
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# Local History for Visual Studio Code
+.history/
+
+# Built Visual Studio Code Extensions
+*.vsix
+
+# MacOS
+.DS_Store
+
+# Python venv
+.venv/*
+
+# Mkdocs site
+site/*
+
+# Conf file
+wg0.conf
+.env

@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "plex-wg-stack"
+version = "0.1.0"
+description = "Compose Stack for docker plex and wireguard"
+authors = ["LimeDrive <limecat@limedrive.fr>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+mkdocs = "^1.5.3"
+mkdocs-material = "^9.3.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
