@@ -1,7 +1,10 @@
 site_name: Plex Wireguard Stack
 repo_url: https://github.com/LimeDrive/plex_wg_stack
+repo_name: LimeDrive/plex_wg_stack
 
 theme:
+  icon:
+    repo: fontawesome/brands/github 
   name: material
   palette:
     - scheme: default

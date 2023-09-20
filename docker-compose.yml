@@ -11,10 +11,18 @@ networks:
       driver: default
       config:
         - subnet: 172.20.0.0/24    # docker network create --driver=bridge --subnet=172.20.0.0/24 vpn_network
+  traefik_network:
+    external: true
+    name: traefik_network
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.0.0/24    # docker network create --driver=bridge --subnet=172.20.0.0/24 vpn_network
 
 services:
 
   wireguard:
+
     image: lscr.io/linuxserver/wireguard:${WG_TAG:-latest}
     container_name: wireguard
     restart: unless-stopped
@@ -47,6 +55,8 @@ services:
       VERSION: docker
     expose:
       - 32400
+    # ports: Port Mapping for plex.
+    #   - 32400:32400
     volumes:
       - ./config/plex:/config
       - ./scripts/custom-cont-init.d:/custom-cont-init.d
@@ -64,4 +74,6 @@ services:
     networks:
       vpn_network:
         ipv4_address: 172.20.0.10
+      # traefik_network:
+      #   ipv4_address: 172.18.0.10
 ...
