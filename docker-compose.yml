@@ -4,26 +4,25 @@ version: "3.8"
 
 networks:
 
-  vpn_network:
+  100_vpn_network:
     external: true
-    name: vpn_network
+    name: 100_vpn_network
     ipam:
       driver: default
       config:
-        - subnet: 172.20.0.0/24    # docker network create --driver=bridge --subnet=172.20.0.0/24 vpn_network
-  traefik_network:
+        - subnet: 172.20.100.0/24    # docker network create --driver=bridge --subnet=172.20.100.0/24 100_vpn_network
+  200_traefik_network:
     external: true
-    name: traefik_network
+    name: 200_traefik_network
     ipam:
       driver: default
       config:
-        - subnet: 172.18.0.0/24    # docker network create --driver=bridge --subnet=172.20.0.0/24 vpn_network
+        - subnet: 172.20.200.0/24    # docker network create --driver=bridge --subnet=172.20.200.0/24 200_traefik_network
 
 services:
 
   wireguard:
-
-    image: lscr.io/linuxserver/wireguard:${WG_TAG:-latest}
+    image: lscr.io/linuxserver/wireguard:${WIREGUARD_TAG:-latest}
     container_name: wireguard
     restart: unless-stopped
     environment:
@@ -35,28 +34,31 @@ services:
       - SYS_MODULE
     volumes:
       - ./config/wireguard:/config
+      - ./scripts:/scripts
       - /lib/modules:/lib/modules
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1
+      - net.ipv6.conf.all.forwarding=1
       - net.ipv4.ip_forward=1
     networks:
-      vpn_network:
-        ipv4_address: 172.20.0.200
+      100_vpn_network:
+        ipv4_address: 172.20.100.255
 
   plex:
     image: lscr.io/linuxserver/plex:${PLEX_TAG:-latest}
     container_name: plex
     restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
     environment:
       PUID: ${XID:-0}
       PGID: ${XID:-0}
       TZ: ${TZ:-Europe/Paris}
       UMASK: 0002
       VERSION: docker
+      WG_CONTAINER_NAME: wireguard
     expose:
       - 32400
-    # ports: Port Mapping for plex.
-    #   - 32400:32400
     volumes:
       - ./config/plex:/config
       - ./scripts/custom-cont-init.d:/custom-cont-init.d
@@ -72,8 +74,8 @@ services:
     #   - "traefik.http.services.plex-svc.loadbalancer.server.port=32400"
     #   - "traefik.http.routers.plex.middlewares=auth_2FA@file"
     networks:
-      vpn_network:
-        ipv4_address: 172.20.0.10
-      # traefik_network:
-      #   ipv4_address: 172.18.0.10
+      100_vpn_network:
+        ipv4_address: 172.20.100.10
+      200_traefik_network:
+        ipv4_address: 172.20.200.10
 ...
