@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Disallow wireguard iptables base rules
-iptables -D FORWARD -i %i -j ACCEPT
-iptables -D FORWARD -o %i -j ACCEPT
+# $1 is the interface name
+iptables -D FORWARD -i $1 -j ACCEPT
+iptables -D FORWARD -o $1 -j ACCEPT
 iptables -t nat -D POSTROUTING -o eth+ -j MASQUERADE
 

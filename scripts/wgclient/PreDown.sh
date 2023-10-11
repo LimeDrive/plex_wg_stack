@@ -3,7 +3,7 @@
 # Disallow traffic trough wireguard interface
 iptables -t nat -D POSTROUTING -o wg+ -j MASQUERADE
 
-# Port forward
+# Port forward container to container
 json_file="/scripts/wgclient/forward.json"
 
 if [ -f "$json_file" ]; then
@@ -23,5 +23,5 @@ else
 fi
 
 # Allow traffic not going trough wireguard interface
-iptables -D OUTPUT ! -o %i -m mark ! --mark $(wg show %i fwmark) -m addrtype ! --dst-type LOCAL -j REJECT
-ip6tables -D OUTPUT ! -o %i -m mark ! --mark $(wg show %i fwmark) -m addrtype ! --dst-type LOCAL -j REJECT
+iptables -D OUTPUT ! -o $1 -m mark ! --mark $(wg show $1 fwmark) -m addrtype ! --dst-type LOCAL -j REJECT
+ip6tables -D OUTPUT ! -o $1 -m mark ! --mark $(wg show $1 fwmark) -m addrtype ! --dst-type LOCAL -j REJECT
