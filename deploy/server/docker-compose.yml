@@ -3,7 +3,6 @@
 version: "3.8"
 
 networks:
-
   100_vpn_network:
     external: true
     name: 100_vpn_network
@@ -11,16 +10,15 @@ networks:
       driver: default
       config:
         - subnet: 172.20.100.0/24    # docker network create --driver=bridge --subnet=172.20.100.0/24 100_vpn_network
-  200_traefik_network:
-    external: true
-    name: 200_traefik_network
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.20.200.0/24    # docker network create --driver=bridge --subnet=172.20.200.0/24 200_traefik_network
+  # 200_traefik_network:
+  #   external: true
+  #   name: 200_traefik_network
+  #   ipam:
+  #     driver: default
+  #     config:
+  #       - subnet: 172.20.200.0/24    # docker network create --driver=bridge --subnet=172.20.200.0/24 200_traefik_network
 
 services:
-
   wireguard:
     image: lscr.io/linuxserver/wireguard:${WIREGUARD_TAG:-latest}
     container_name: wireguard
@@ -29,41 +27,23 @@ services:
       PUID: ${XID:-0}
       PGID: ${XID:-0}
       TZ: ${TZ:-Europe/Paris}
+      SERVERURL: auto #optional
+      SERVERPORT: 51820 #optional
+      PEERS: 1 #optional
+      PEERDNS: auto #optional
+      INTERNAL_SUBNET: 10.13.13.0 #optional
+      ALLOWEDIPS: 0.0.0.0/0 #optional
+      LOG_CONFS: true #optional
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
+    ports:
+      - 51820:51820/udp
+      - 32400:32400 # Plex port forwading
     volumes:
       - ./config/wireguard:/config
       - ./scripts:/scripts
       - /lib/modules:/lib/modules
-    sysctls:
-      - net.ipv4.conf.all.src_valid_mark=1
-      - net.ipv6.conf.all.forwarding=1
-      - net.ipv4.ip_forward=1
-    networks:
-      100_vpn_network:
-        ipv4_address: 172.20.100.255
-
-  plex:
-    image: lscr.io/linuxserver/plex:${PLEX_TAG:-latest}
-    container_name: plex
-    restart: unless-stopped
-    cap_add:
-      - NET_ADMIN
-    environment:
-      PUID: ${XID:-0}
-      PGID: ${XID:-0}
-      TZ: ${TZ:-Europe/Paris}
-      UMASK: 0002
-      VERSION: docker
-      WG_CONTAINER_NAME: wireguard
-    expose:
-      - 32400
-    volumes:
-      - ./config/plex:/config
-      - ./scripts/custom-cont-init.d:/custom-cont-init.d
-      - ./path/to/tvseries:/tv
-      - ./path/to/movies:/movies
     # labels:
     #   - "traefik.enable=true"
     #   - "traefik.http.routers.plex.rule=Host(`plex.${DOMAINE:?err}`)"
@@ -73,9 +53,11 @@ services:
     #   - "traefik.http.routers.plex.service=plex-svc"
     #   - "traefik.http.services.plex-svc.loadbalancer.server.port=32400"
     #   - "traefik.http.routers.plex.middlewares=auth_2FA@file"
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+      - net.ipv6.conf.all.forwarding=1
+      - net.ipv4.ip_forward=1
     networks:
       100_vpn_network:
-        ipv4_address: 172.20.100.10
-      200_traefik_network:
-        ipv4_address: 172.20.200.10
+        ipv4_address: 172.20.100.50
 ...

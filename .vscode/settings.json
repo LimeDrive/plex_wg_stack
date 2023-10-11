@@ -1,0 +1,5 @@
+{
+    "yaml.schemas": {
+        "https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json": "file:///Users/limehub/Documents/Github/plex_wg_stack/compose-client.yml"
+    }
+}
