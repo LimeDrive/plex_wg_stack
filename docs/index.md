@@ -1,42 +1,18 @@
-# plex_wg_stack 
+# Description 
 
-### About
+**plew_wg_stack** is a collection of two Docker Compose files and related configurations. The first one is designed to run a WireGuard container from LinuxServer.io (lsio) as a server, intended for deployment on an affordable VPS. The second Compose file runs an lsio Plex container with default IP routing modified to pass through a WireGuard container, which operates as a client on the same machine.
 
-plex_wg_stack is a docker-compose file that sets up a WireGuard VPN server and a Plex media server. It is designed to be easy to use and configure, and it can be used on any system that supports Docker.
+A set of scripts is also included to assist in configuring the WireGuard containers.
 
+Here are a few key points to consider with this stack:
 
-### Installation
+- The primary objective is to either run Plex behind a VPN or access Plex from within a VPN. This approach can be applied to other lsio containers as well.
 
-To install plex_wg_stack:
+- **This stack does not use `network_mode: "service:wireguard"**. This choice is made to avoid conflicts in the use of container networks, enabling the concurrent operation of multiple stacks within the same VPN/container. This setup allows you to run multiple services like Plex, WireGuard, Transmission, and others without port conflicts. Your web user interface and any existing reverse proxy configurations will continue to function when connected to the VPN.
 
-* clone the repository
-* create a `.env` file following your need
-* run the following command:
+- The bundle of scripts provided is intended to facilitate the setup of the WireGuard container. They are not mandatory, and you can use your custom configurations if desired.
 
-```
-docker-compose up -d
-```
+- This stack supports only lsio containers or containers running on s6-overlay.
 
-This will create and start the WireGuard and Plex containers.
+- On the server side, port forwarding is handled within the container, and Docker manages the port forwarding from the host to the container.
 
-### Configuration
-
-The following environment variables can be set in `.env` file to configure the WireGuard and Plex containers:
-
-* `WG_TAG`: The version of the WireGuard image to use.
-* `PLEX_TAG`: The version of the Plex image to use.
-* `XID`: The user ID to use for the WireGuard and Plex containers.
-* `TZ`: The timezone to use for the WireGuard and Plex containers.
-
-### Usage
-
-WIP
-
-### Troubleshooting
-
-If you have any problems with plex_wg_stack, please check the following:
-
-* The Docker service is running.
-* The WireGuard and Plex containers are running.
-* The WireGuard and Plex ports are open on your firewall.
-* The WireGuard and Plex configuration files are correct.
