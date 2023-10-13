@@ -20,6 +20,7 @@ fi
 
 echo "---> set default route to wireguard the container"
 
+# TODO: fix this
 if [ -n "$WG_CONTAINER_NAME" ]; then
     WG_IP_ADDR=$(ping -c 1 $WG_CONTAINER_NAME | awk -F '[()]' '/PING/{print $2}' | head -n 1)
     if [ -n "$WG_IP_ADDR" ]; then
