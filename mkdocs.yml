@@ -2,6 +2,10 @@ site_name: Plex Wireguard Stack
 repo_url: https://github.com/LimeDrive/plex_wg_stack
 repo_name: LimeDrive/plex_wg_stack
 
+nav:
+  - Home: index.md
+  - Gluetun: gluetun_plex_install.md
+
 theme:
   icon:
     repo: fontawesome/brands/github 
