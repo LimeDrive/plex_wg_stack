@@ -7,6 +7,10 @@
 ## - TZ : timezone
 ## - DOMAIN : domain name
 ## - PATH_PLEX_CONFIG : path to plex config in ssd
+## - OPENVPN_USER : protonvpn user
+## - OPENVPN_PASSWORD : protonvpn password
+
+
 version: "3.8"
 
 networks:
@@ -18,8 +22,7 @@ services:
   gluetun:
     image: qmcgaw/gluetun:${GLUETUN_TAG:-latest}
     container_name: gluetun
-    # line above must be uncommented to allow external containers to connect.
-    # See https://github.com/qdm12/gluetun-wiki/blob/main/setup/connect-a-container-to-gluetun.md#external-container-to-gluetun
+    restart: unless-stopped
     cap_add:
       - NET_ADMIN
     devices:
@@ -31,8 +34,8 @@ services:
     environment:
       # See https://github.com/qdm12/gluetun-wiki/tree/main/setup#setup
       VPN_SERVICE_PROVIDER: protonvpn
-      OPENVPN_USER: my super user from free protonvpn account
-      OPENVPN_PASSWORD: my super password from free protonvpn account
+      OPENVPN_USER: ${OPENVPN_USER:-free_protonvpn_account}
+      OPENVPN_PASSWORD: ${OPENVPN_PASSWORD:-free_protonvpn_password}
       TZ: ${TZ:-Europe/Paris}
       # Server list updater
       # See https://github.com/qdm12/gluetun-wiki/blob/main/setup/servers.md#update-the-vpn-servers-list
@@ -60,8 +63,8 @@ services:
     restart: unless-stopped
     network_mode: service:gluetun
     environment:
-      PUID: ${XID:-0}
-      PGID: ${XID:-0}
+      PUID: ${XID:-1000}
+      PGID: ${XID:-1000}
       TZ: ${TZ:-Europe/Paris}
       UMASK: 0002
       VERSION: docker
