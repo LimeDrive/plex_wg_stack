@@ -1,5 +1,12 @@
 ---
 ## Plex VPN Gluetun compose file for ssd (with traefik)
+## env :
+## - XID : user id
+## - GLUETUN_TAG : gluetun image tag
+## - PLEX_TAG : plex image tag
+## - TZ : timezone
+## - DOMAIN : domain name
+## - PATH_PLEX_CONFIG : path to plex config in ssd
 version: "3.8"
 
 networks:
@@ -30,19 +37,18 @@ services:
       # Server list updater
       # See https://github.com/qdm12/gluetun-wiki/blob/main/setup/servers.md#update-the-vpn-servers-list
       UPDATER_PERIOD: 24h
-    # Uncomment the following lines to use Traefik with Gluetun
-    # labels:
-    #   traefik.enable: 'true'
-    #   ## HTTP Routers
-    #   traefik.http.routers.plex-rtr.entrypoints: 'http,https'
-    #   traefik.http.routers.plex-rtr.rule: 'Host(`plex.${DOMAIN:-example.com}`)'
-    #   traefik.http.routers.plex-rtr.tls: 'true'
-    #   ## Middlewares
-    #   traefik.http.routers.plex-rtr.middlewares: 'chain-no-auth@file'
-    #   traefik.http.routers.plex-rtr.service: 'plex-svc'
-    #   traefik.http.routers.plex-rtr.tls.certresolver: 'letsencrypt'
-    #   ## HTTP Services
-    #   traefik.http.services.plex-svc.loadbalancer.server.port: "32400"
+    labels:
+      traefik.enable: 'true'
+      ## HTTP Routers
+      traefik.http.routers.plex-rtr.entrypoints: 'http,https'
+      traefik.http.routers.plex-rtr.rule: 'Host(`plex.${DOMAIN:-example.com}`)'
+      traefik.http.routers.plex-rtr.tls: 'true'
+      ## Middlewares
+      traefik.http.routers.plex-rtr.middlewares: 'chain-no-auth@file'
+      traefik.http.routers.plex-rtr.service: 'plex-svc'
+      traefik.http.routers.plex-rtr.tls.certresolver: 'letsencrypt'
+      ## HTTP Services
+      traefik.http.services.plex-svc.loadbalancer.server.port: "32400"
     networks:
       traefik_proxy:
         aliases:
