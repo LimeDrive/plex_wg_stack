@@ -7,6 +7,7 @@
 ## - TZ : timezone
 ## - DOMAIN : domain name
 ## - PATH_PLEX_CONFIG : path to plex config in ssd
+## - PATH_HOME : path to home in ssd
 ## - OPENVPN_USER : protonvpn user
 ## - OPENVPN_PASSWORD : protonvpn password
 
@@ -34,8 +35,8 @@ services:
     environment:
       # See https://github.com/qdm12/gluetun-wiki/tree/main/setup#setup
       VPN_SERVICE_PROVIDER: protonvpn
-      OPENVPN_USER: ${OPENVPN_USER:-free_protonvpn_account}
-      OPENVPN_PASSWORD: ${OPENVPN_PASSWORD:-free_protonvpn_password}
+      OPENVPN_USER: ${OPENVPN_USER:?error}
+      OPENVPN_PASSWORD: ${OPENVPN_PASSWORD:?error}
       TZ: ${TZ:-Europe/Paris}
       # Server list updater
       # See https://github.com/qdm12/gluetun-wiki/blob/main/setup/servers.md#update-the-vpn-servers-list
@@ -44,7 +45,7 @@ services:
       traefik.enable: 'true'
       ## HTTP Routers
       traefik.http.routers.plex-rtr.entrypoints: 'http,https'
-      traefik.http.routers.plex-rtr.rule: 'Host(`plex.${DOMAIN:-example.com}`)'
+      traefik.http.routers.plex-rtr.rule: 'Host(`${DOMAIN:?error}`)'
       traefik.http.routers.plex-rtr.tls: 'true'
       ## Middlewares
       traefik.http.routers.plex-rtr.middlewares: 'chain-no-auth@file'
@@ -71,6 +72,6 @@ services:
       UMASK: 0002
       VERSION: docker
     volumes:
-      - ${PATH_PLEX_CONFIG:-/home/$USER/seedbox/docker/$USER/plex/}:/config
-      - /home/$USER:/home/$USER
+      - ${PATH_PLEX_CONFIG:?error}:/config
+      - ${PATH_HOME:?error}:${PATH_HOME:?error}
 ...

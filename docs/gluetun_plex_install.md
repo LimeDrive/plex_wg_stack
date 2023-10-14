@@ -52,6 +52,7 @@ PLEX_TAG='latest'
 TZ='Europe/Paris'
 DOMAIN='plex.example.com'
 PATH_PLEX_CONFIG='/home/$USER/check/path/plex/config/on/host'
+PATH_HOME='/home/$USER'
 OPENVPN_USER='protonvpn_username'
 OPENVPN_PASSWORD='protonvpn_password'
 ```
@@ -81,7 +82,7 @@ OPENVPN_PASSWORD='protonvpn_password'
 
 - `PATH_PLEX_CONFIG` : Le chemin de votre dossier de configuration plex sur votre serveur.
 
-    default : `/home/$USER/seedbox/docker/$USER/plex/config`
+    REQUIRED : `/home/$USER/seedbox/docker/$USER/plex/config`
     > [!NOTE]
     > Pour les utilisateurs du scripte SSDV2 :
     >
@@ -89,9 +90,14 @@ OPENVPN_PASSWORD='protonvpn_password'
     >
     > old install : `/opt/seedbox/docker/$USER/plex/config`
 
+- `PATH_HOME` : Le chemin absolu de votre dossier home sur votre serveur.
+
+    REQUIRED : `/home/$USER`
+
+
 - `OPENVPN_USER` et `OPENVPN_PASSWORD` : Votre nom d'utilisateur et pass ProtonVPN
 
-    default : `1_username` et `2_password`
+    REQUIRED : `1_username` et `2_password`
 
     ![ProtonVPN](https://imgur.com/2eFcZhg.png)
 
