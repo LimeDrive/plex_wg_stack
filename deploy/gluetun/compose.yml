@@ -60,6 +60,8 @@ services:
   plex:
     image: lscr.io/linuxserver/plex:${PLEX_TAG:-latest}
     container_name: plex
+    depends_on:
+      - gluetun
     restart: unless-stopped
     network_mode: service:gluetun
     environment:
@@ -69,6 +71,6 @@ services:
       UMASK: 0002
       VERSION: docker
     volumes:
-      - ${PATH_PLEX_CONFIG:-/home/$USER/seedbox/docker/$USER/plex/config}:/config
+      - ${PATH_PLEX_CONFIG:-/home/$USER/seedbox/docker/$USER/plex/}:/config
       - /home/$USER:/home/$USER
 ...
