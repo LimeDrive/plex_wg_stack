@@ -38,6 +38,7 @@ services:
       OPENVPN_USER: ${OPENVPN_USER:?error}
       OPENVPN_PASSWORD: ${OPENVPN_PASSWORD:?error}
       TZ: ${TZ:-Europe/Paris}
+      FREE_ONLY: on
       # Server list updater
       # See https://github.com/qdm12/gluetun-wiki/blob/main/setup/servers.md#update-the-vpn-servers-list
       UPDATER_PERIOD: 24h
@@ -59,19 +60,20 @@ services:
           - "plex"
 
   plex:
-    image: lscr.io/linuxserver/plex:${PLEX_TAG:-latest}
+    image: plexinc/pms-docker:${PLEX_TAG:-latest}
     container_name: plex
     depends_on:
       - gluetun
     restart: unless-stopped
     network_mode: service:gluetun
     environment:
-      PUID: ${XID:-1000}
-      PGID: ${XID:-1000}
+      PLEX_UID: ${XID:-1000}
+      PLEX_GID: ${XID:-1000}
       TZ: ${TZ:-Europe/Paris}
-      UMASK: 0002
-      VERSION: docker
     volumes:
       - ${PATH_PLEX_CONFIG:?error}:/config
       - ${PATH_HOME:?error}:${PATH_HOME:?error}
+      - ${PATH_HOME:?error}/Medias:/data
+      - /tmp:/tmp
+      - /dev/shm:/dev/shm
 ...

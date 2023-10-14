@@ -60,9 +60,7 @@ OPENVPN_PASSWORD='protonvpn_password'
 
 - `XID` : L'ID de votre utilisateur sur votre serveur
 
-    ```bash
-    id -u $USER
-    ```
+    `id -u $USER`
 
 - `GLUETUN_TAG` : La version de gluetun que vous voulez utiliser. [Voir les versions](https://hub.docker.com/r/qmcgaw/gluetun/tags?page=1&ordering=last_updated)
 
@@ -123,12 +121,7 @@ docker exec plex curl -sSL https://ipv4.icanhazip.com
 
 ### 7. Réglage de Plex.
 
-#### 7.1. Dans la section `Remote Access` de Plex, cliquez sur `Disable Remote Access`.
-Sa nous assure que Plex ne va pas essayer de se connecter directement à votre serveur. Vous devez voir afficher `Not available outside your network` comme sur l'image ci-dessous.
-
-![Remote Access](https://i.imgur.com/VtbbBSY.png)
-
-#### 7.2. Dans la section `Network` de Plex, cliquez sur `Show Advanced` et remplissez les champs comme sur l'image ci-dessous.
+#### 7.1. Dans la section `Network` de Plex, cliquez sur `Show Advanced` et remplissez les champs comme sur l'image ci-dessous.
 
 ![Network](https://i.imgur.com/9pjchSV.png)
 
@@ -143,6 +136,11 @@ Sa nous assure que Plex ne va pas essayer de se connecter directement à votre s
     >
     > `https://plex.example.com:443,http://plex.example.com:80`
 
+
+#### 7.2. Dans la section `Remote Access` de Plex, cliquez sur `Disable Remote Access`.
+Sa nous assure que Plex ne va pas essayer de se connecter directement à votre serveur. Vous devez voir afficher `Not available outside your network` comme sur l'image ci-dessous.
+
+![Remote Access](https://i.imgur.com/VtbbBSY.png)
 
 ### 8. Verifier les réglages de Cloudflare.
 
