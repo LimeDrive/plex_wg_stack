@@ -164,3 +164,8 @@ Dans les régles de cache, vous devez avoir une regle pour le sous-domaine `plex
 
 
 ![SetRule](https://i.imgur.com/YqaZbD8.png)
+
+
+### 9. Optionelle : Activation de l' iGPU pour les processeurs Intel.
+
+Documentation Hetzner : [Enabling the iGPU on Intel Processors](https://community.hetzner.com/tutorials/howto-enable-igpu)
