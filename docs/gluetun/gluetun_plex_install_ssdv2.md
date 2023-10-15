@@ -168,4 +168,26 @@ Dans les régles de cache, vous devez avoir une regle pour le sous-domaine `plex
 
 ### 9. Optionelle : Activation de l' iGPU pour les processeurs Intel.
 
+> [!WARNING]
+> Cette partie est optionelle et ne concerne que les utilisateurs de processeurs Intel avec un iGPU.
+
+#### 9.1. Suivre la documentation Hetzner sur le système d'exploitation de votre serveur.
+
 Documentation Hetzner : [Enabling the iGPU on Intel Processors](https://community.hetzner.com/tutorials/howto-enable-igpu)
+
+#### 9.2. Editer le fichier `docker-compose.yml`
+
+Agouter les lignes suivantes dans le service `plex` :
+
+```yaml
+...
+plex:
+    image: plexinc/pms-docker:${PLEX_TAG:-latest}
+    ...
+    devices:
+    - /dev/dri:/dev/dri
+    volumes:
+    ...
+    - /dev/dri:/dev/dri
+```
+

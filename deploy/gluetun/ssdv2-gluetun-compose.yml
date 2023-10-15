@@ -76,5 +76,4 @@ services:
       - ${PATH_HOME:?error}/Medias:/data
       - /tmp:/tmp
       - /dev/shm:/dev/shm
-      - /dev/dri:/dev/dri
 ...
