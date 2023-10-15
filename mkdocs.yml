@@ -5,7 +5,10 @@ repo_name: LimeDrive/plex_wg_stack
 
 nav:
   - Home: index.md
-  - Gluetun: gluetun_plex_install.md
+  - Tutorials:
+    - Gluetun:
+      - Fix for SSDV2: gluetun/gluetun_plex_install_ssdv2.md
+    - Wireguard:
 
 theme:
   icon:
