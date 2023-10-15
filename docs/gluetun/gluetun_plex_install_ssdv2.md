@@ -191,3 +191,9 @@ plex:
     - /dev/dri:/dev/dri
 ```
 
+#### 9.3. Redemarrer le container plex
+
+```bash
+docker compose up -d plex
+```
+

@@ -28,8 +28,8 @@ services:
       - NET_ADMIN
     devices:
       - /dev/net/tun:/dev/net/tun
-    expose:
-      - 32400 # plex
+    ports:
+      - 32400:32400 # plex
     volumes:
       - ./config/gluetun:/gluetun
     environment:
