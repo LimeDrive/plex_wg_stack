@@ -2,11 +2,14 @@
 
 Ce guide explique comment installer Plex sous VPN avec Gluetun. En utilisant un VPN gratuit : [ProtonVPN](https://protonvpn.com/).
 
+---
+
 ## Cree un compte ProtonVPN et recuperer les identifiants d'openvpn gratuit
 
 1. Creer un compte ProtonVPN [ici](https://account.protonvpn.com/signup)
 2. Recuperer les identifiants d'openvpn gratuit [ici](https://account.proton.me/u/0/vpn/OpenVpnIKEv2)
 
+---
 
 ##  Procédure d'installation pour les utilisateurs du script SSDV2
 
@@ -31,7 +34,7 @@ cd /home/$USER/plex_vpn
 
 
 ```bash
-curl -o docker-compose.yml https://raw.githubusercontent.com/LimeDrive/plex_wg_stack/master/deploy/gluetun/compose.yml
+curl -o docker-compose.yml https://raw.githubusercontent.com/LimeDrive/plex_wg_stack/master/deploy/gluetun/ssdv2-gluetun-compose.yml
 ```
 
 ### 4. Crée et editer le fichier .env

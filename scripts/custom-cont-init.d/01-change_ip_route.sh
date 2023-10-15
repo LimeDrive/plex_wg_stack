@@ -1,26 +1,27 @@
 #!/usr/bin/with-contenv bash
+
 echo "**** start 01-change_ip_route.sh ****"
 echo "---> install packages"
-
 if [ -f /usr/bin/apt ]; then
   ## Ubuntu
-  apt update
-  apt install --no-install-recommends -y \
+  apt update > /dev/null
+  apt install --no-install-recommends -y -m \
     iptables \
-    jq \
-    iproute2 
+    iputils-ping \
+    iproute2 \
+    > /dev/null
 fi
 if [ -f /sbin/apk ]; then
   # Alpine
-  apk add --no-cache \
+  apk add --no-cache --allow-untrusted \
     iptables \
-    jq \
-    iproute2
+    iputils-ping \
+    iproute2 \
+    > /dev/null
 fi
 
 echo "---> set default route to wireguard the container"
 
-# TODO: fix this
 if [ -n "$WG_CONTAINER_NAME" ]; then
     WG_IP_ADDR=$(ping -c 1 $WG_CONTAINER_NAME | awk -F '[()]' '/PING/{print $2}' | head -n 1)
     if [ -n "$WG_IP_ADDR" ]; then
