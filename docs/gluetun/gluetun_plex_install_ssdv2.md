@@ -2,6 +2,8 @@
 
 Ce guide explique comment installer Plex sous VPN avec Gluetun. En utilisant un VPN gratuit : [ProtonVPN](https://protonvpn.com/).
 
+Il est destiné aux utilisateurs de [SSDV2](https://github.com/projetssd/ssdv2) et n'est pas supporté officiellement par le projet.
+
 ---
 
 ## Cree un compte ProtonVPN et recuperer les identifiants d'openvpn gratuit
@@ -17,6 +19,46 @@ Ce guide explique comment installer Plex sous VPN avec Gluetun. En utilisant un 
 > [!WARNING]
 > Veillez à bien remplacer les variables par les votres. Chaque installation est unique donc bien verifier les chemins et les ports. **Surtout stopper votre ancien container plex**
 
+## Prérequis
+
+### Avoir un nom de domaine configuré pour plex sur votre serveur.
+
+Les utlisateurs de cloudflare deveront impérativement suivre la partie 8 pour bypass le cache. Nous allons faire passer le traffic des stream par le proxy cloudflare, donc si le cache est activé vous risquez d'avoir des erreurs de lecture et un ban de leur service.
+
+### Installer docker et docker-compose
+
+Docker et installé par defaut sur SSDV2, mais ce n'est pas le cas de docker compose.
+
+#### Vériier si docker-compose est installé
+
+```bash
+docker compose version
+```
+
+#### Installer docker-compose si nessessaire
+
+```bash
+apt install docker-compose-plugins
+```
+
+### Verifiez que votre ancinen container plex est bien stoppé et supprimer.
+
+> [!NOTE]
+> Inutil si vous n'aviez pas d'ancien container plex. Donc en cas de nouvelle installation.
+
+```bash
+docker inspect -f '{{.State.Status}}' plex
+```
+
+Si vous voyez `running` ou `restarting` vous devez stopper votre ancien container plex.
+
+```bash
+docker stop plex && docker rm plex
+```
+
+---
+
+## Installation
 
 ### 1. Creer un dossier pour la stack Plex
 
@@ -39,14 +81,19 @@ curl -o docker-compose.yml https://raw.githubusercontent.com/LimeDrive/plex_wg_s
 
 ### 4. Crée et editer le fichier .env
 
-#### Crée le fichier .env dans le dossier plex_vpn l'édité avec nano
+#### 4.1. Crée le fichier .env dans le dossier plex_vpn l'édité avec nano
 
 ```bash
 touch .env && nano .env
 ```
 ---
     
-#### Remplacer les variables par les votres.
+#### 4.2. Remplacer les variables par les votres.
+
+> [!NOTE]
+> Vous pouvez copier coller le bloc de code ci-dessous et remplacer les variables par les votres.
+>
+> /!\ Les $USER sont a remplacer par votre nom d'utilisateur sur votre serveur.
 
 ```ini
 XID=1000
@@ -59,7 +106,7 @@ PATH_HOME='/home/$USER'
 OPENVPN_USER='protonvpn_username'
 OPENVPN_PASSWORD='protonvpn_password'
 ```
-##### Explication des variables.
+##### 4.2.0 Explication des variables.
 
 - `XID` : L'ID de votre utilisateur sur votre serveur
 
@@ -102,7 +149,7 @@ OPENVPN_PASSWORD='protonvpn_password'
 
     ![ProtonVPN](https://imgur.com/2eFcZhg.png)
 
-##### Sauvegarder et quitter
+##### 4.3. Sauvegarder et quitter
 
 `ctrl` + `x` pour quitter et `y` pour sauvegarder
 
@@ -123,6 +170,9 @@ docker exec plex curl -sSL https://ipv4.icanhazip.com
 > Vous devriez voir l'ip de votre VPN et non celle de votre serveur.
 
 ### 7. Réglage de Plex.
+
+> [!WARNING]
+> Si vous faite une nouvelle installation de plex vous devez suivre la partie 10 pour claim le server. Avant de faire les réglages.
 
 #### 7.1. Dans la section `Network` de Plex, cliquez sur `Show Advanced` et remplissez les champs comme sur l'image ci-dessous.
 
@@ -197,3 +247,51 @@ plex:
 docker compose up -d plex
 ```
 
+### 10. Optionelle : Claim du server pour les nouvelle installation.
+
+Si vous n'aviez pas d'intallation plex avant, vous devez claim le server pour pouvoir l'utiliser.
+
+> ![Note]
+> La procedure est a faire en moin de 4 minutes sinon le claim token expire.
+#### 10.1. Preparer la variable claim token
+
+- Editer le fichier `docker-compose.yml` :
+
+```bash
+nano docker-compose.yml
+```
+
+- Ajouter la variable `PLEX_CLAIM` dans le service `plex` :
+
+```yaml
+...
+plex:
+    image: plexinc/pms-docker:${PLEX_TAG:-latest}
+    ...
+    environment:
+    ...
+    PLEX_CLAIM: 'claim-xxxxxxxxxxxxxxxxxxxx' # claim token voir 10.2 ci-dessous 
+```
+
+#### 10.2. Recuperer le claim token
+
+Se rendre sur le site de plex [ici](https://www.plex.tv/claim/), se connecter et recuperer le claim token.
+
+#### 10.3. Enregistrer et quitter
+
+`ctrl` + `x` pour quitter et `y` pour sauvegarder
+
+#### 10.4. Reconstruire et re-up le container plex
+
+```bash
+docker compose rm -s plex
+```
+
+```bash
+docker compose up -d plex
+```
+
+
+---
+
+enjoy !
