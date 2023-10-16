@@ -38,7 +38,7 @@ docker compose version
 #### Installer docker-compose si nessessaire
 
 ```bash
-apt install docker-compose-plugins
+sudo apt install docker-compose-plugin
 ```
 
 ### Verifiez que votre ancinen container plex est bien stoppé et supprimer.
