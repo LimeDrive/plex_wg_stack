@@ -7,6 +7,7 @@ nav:
   - Home: index.md
   - Tutorials:
       - Fix for SSDV2: gluetun/gluetun_plex_install_ssdv2.md
+      - VPS Setup: wg-stack/install_server_vps.md
 
 theme:
   icon:
@@ -27,3 +28,18 @@ theme:
         name: Switch to light mode
       primary: teal
       accent: lime
+  features:
+    - content.code.copy
+    - content.code.select
+    - content.code.annotate
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - admonition
+  - pymdownx.details

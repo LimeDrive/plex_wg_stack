@@ -16,8 +16,13 @@ Il est destiné aux utilisateurs de [SSDV2](https://github.com/projetssd/ssdv2) 
 ##  Procédure d'installation pour les utilisateurs du script SSDV2
 
 
-> [!WARNING]
-> Veillez à bien remplacer les variables par les votres. Chaque installation est unique donc bien verifier les chemins et les ports. **Surtout stopper votre ancien container plex**
+!!! warning "Attention"
+
+    Cette procédure est destiné aux utilisateurs du script SSDV2. Si vous n'utilisez pas le script SSDV2, vous devez adapter les chemins de cette procédure à votre installation.
+
+!!! danger "Danger"
+
+    Veillez à bien remplacer les variables par les votres. Chaque installation est unique donc bien verifier les chemins et les ports. **Surtout stopper votre ancien container plex**
 
 ## Prérequis
 
@@ -43,8 +48,9 @@ sudo apt install docker-compose-plugin
 
 ### Verifiez que votre ancinen container plex est bien stoppé et supprimer.
 
-> [!NOTE]
-> Inutil si vous n'aviez pas d'ancien container plex. Donc en cas de nouvelle installation.
+!!! Note "Note"
+
+    Inutil si vous n'aviez pas d'ancien container plex. Donc en cas de nouvelle installation.
 
 ```bash
 docker inspect -f '{{.State.Status}}' plex
@@ -90,10 +96,13 @@ touch .env && nano .env
     
 #### 4.2. Remplacer les variables par les votres.
 
-> [!NOTE]
-> Vous pouvez copier coller le bloc de code ci-dessous et remplacer les variables par les votres.
->
-> /!\ Les $USER sont a remplacer par votre nom d'utilisateur sur votre serveur.
+!!! Note "Note"
+
+     Vous pouvez copier coller le bloc de code ci-dessous et remplacer les variables par les votres.
+
+!!! warning "Attention"
+
+    Les $USER sont a remplacer par votre nom d'utilisateur sur votre serveur.
 
 ```ini
 XID=1000
@@ -131,12 +140,13 @@ OPENVPN_PASSWORD='protonvpn_password'
 - `PATH_PLEX_CONFIG` : Le chemin de votre dossier de configuration plex sur votre serveur.
 
     REQUIRED : `/home/$USER/seedbox/docker/$USER/plex/config`
-    > [!NOTE]
-    > Pour les utilisateurs du scripte SSDV2 :
-    >
-    > nouvelle install : `/home/$USER/seedbox/docker/$USER/plex/config`
-    >
-    > old install : `/opt/seedbox/docker/$USER/plex/config`
+    !!! Note "Note"
+
+        Pour les utilisateurs du scripte SSDV2 :
+        
+        nouvelle install : `/home/$USER/seedbox/docker/$USER/plex/config`
+        
+        old install : `/opt/seedbox/docker/$USER/plex/config`
 
 - `PATH_HOME` : Le chemin absolu de votre dossier home sur votre serveur.
 
@@ -165,14 +175,15 @@ docker compose up -d
 ```bash
 docker exec plex curl -sSL https://ipv4.icanhazip.com
 ```
+!!! note "Note"
 
-> [!NOTE] 
-> Vous devriez voir l'ip de votre VPN et non celle de votre serveur.
+    Vous devriez voir l'ip de votre VPN et non celle de votre serveur.
 
 ### 7. Réglage de Plex.
 
-> [!WARNING]
-> Si vous faite une nouvelle installation de plex vous devez suivre la partie 10 pour claim le server. Avant de faire les réglages.
+!!! warning "Attention"
+
+    Si vous faite une nouvelle installation de plex vous devez suivre la partie 10 pour claim le server. Avant de faire les réglages.
 
 #### 7.1. Dans la section `Network` de Plex, cliquez sur `Show Advanced` et remplissez les champs comme sur l'image ci-dessous.
 
@@ -184,10 +195,11 @@ docker exec plex curl -sSL https://ipv4.icanhazip.com
 
     `https://plex.example.com:443`
 
-    >[!NOTE]
-    > Si vous utilisez une connection http sur de vieux appareille ( certaine TV ), entrez l'adresse IP complète en http et le port (80) - optionel.
-    >
-    > `https://plex.example.com:443,http://plex.example.com:80`
+    !!! note "Note"
+    
+        Si vous utilisez une connection http sur de vieux appareille ( certaine TV ), entrez l'adresse IP complète en http et le port (80) - optionel.
+        
+        `https://plex.example.com:443,http://plex.example.com:80`
 
 
 #### 7.2. Dans la section `Remote Access` de Plex, cliquez sur `Disable Remote Access`.
@@ -218,8 +230,9 @@ Dans les régles de cache, vous devez avoir une regle pour le sous-domaine `plex
 
 ### 9. Optionelle : Activation de l' iGPU pour les processeurs Intel.
 
-> [!WARNING]
-> Cette partie est optionelle et ne concerne que les utilisateurs de processeurs Intel avec un iGPU.
+!!! warning "Attention"
+
+    Cette partie est optionelle et ne concerne que les utilisateurs de processeurs Intel avec un iGPU.
 
 #### 9.1. Suivre la documentation Hetzner sur le système d'exploitation de votre serveur.
 
@@ -251,8 +264,10 @@ docker compose up -d plex
 
 Si vous n'aviez pas d'intallation plex avant, vous devez claim le server pour pouvoir l'utiliser.
 
-> ![Note]
-> La procedure est a faire en moin de 4 minutes sinon le claim token expire.
+!!! success "Success"
+
+    La procedure est a faire en moin de 4 minutes sinon le claim token expire.
+
 #### 10.1. Preparer la variable claim token
 
 - Editer le fichier `docker-compose.yml` :
