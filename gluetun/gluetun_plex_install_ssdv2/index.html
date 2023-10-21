@@ -1,0 +1,1436 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://limedrive.github.io/plex_wg_stack/gluetun/gluetun_plex_install_ssdv2/">
+      
+      
+        <link rel="prev" href="../..">
+      
+      
+        <link rel="next" href="../../wg-stack/install_server_vps/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.6">
+    
+    
+      
+        <title>Fix for SSDV2 - Plex Wireguard Stack</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.35e1ed30.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.356b1318.min.css">
+      
+      
+
+  
+  
+  
+  
+  <style>:root{--md-annotation-icon:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 12a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M6 13h8l-3.5 3.5 1.42 1.42L17.84 12l-5.92-5.92L10.5 7.5 14 11H6v2Z"/></svg>');}</style>
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="lime">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#installations-de-plex-sous-vpn-avec-gluetun" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Plex Wireguard Stack" class="md-header__button md-logo" aria-label="Plex Wireguard Stack" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Plex Wireguard Stack
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Fix for SSDV2
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="lime"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="lime"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/LimeDrive/plex_wg_stack" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    LimeDrive/plex_wg_stack
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Plex Wireguard Stack" class="md-nav__button md-logo" aria-label="Plex Wireguard Stack" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Plex Wireguard Stack
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/LimeDrive/plex_wg_stack" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    LimeDrive/plex_wg_stack
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Tutorials
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Tutorials
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Fix for SSDV2
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Fix for SSDV2
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cree-un-compte-protonvpn-et-recuperer-les-identifiants-dopenvpn-gratuit" class="md-nav__link">
+    Cree un compte ProtonVPN et recuperer les identifiants d'openvpn gratuit
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#procedure-dinstallation-pour-les-utilisateurs-du-script-ssdv2" class="md-nav__link">
+    Procédure d'installation pour les utilisateurs du script SSDV2
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequis" class="md-nav__link">
+    Prérequis
+  </a>
+  
+    <nav class="md-nav" aria-label="Prérequis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#avoir-un-nom-de-domaine-configure-pour-plex-sur-votre-serveur" class="md-nav__link">
+    Avoir un nom de domaine configuré pour plex sur votre serveur.
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installer-docker-et-docker-compose" class="md-nav__link">
+    Installer docker et docker-compose
+  </a>
+  
+    <nav class="md-nav" aria-label="Installer docker et docker-compose">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#veriier-si-docker-compose-est-installe" class="md-nav__link">
+    Vériier si docker-compose est installé
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installer-docker-compose-si-nessessaire" class="md-nav__link">
+    Installer docker-compose si nessessaire
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verifiez-que-votre-ancinen-container-plex-est-bien-stoppe-et-supprimer" class="md-nav__link">
+    Verifiez que votre ancinen container plex est bien stoppé et supprimer.
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-creer-un-dossier-pour-la-stack-plex" class="md-nav__link">
+    1. Creer un dossier pour la stack Plex
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-se-placer-dans-le-dossier" class="md-nav__link">
+    2. Se placer dans le dossier
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-telecharger-le-fichier-docker-composeyml-depuis-le-depot" class="md-nav__link">
+    3. Telecharger le fichier docker-compose.yml depuis le depot
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-cree-et-editer-le-fichier-env" class="md-nav__link">
+    4. Crée et editer le fichier .env
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Crée et editer le fichier .env">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-cree-le-fichier-env-dans-le-dossier-plex_vpn-ledite-avec-nano" class="md-nav__link">
+    4.1. Crée le fichier .env dans le dossier plex_vpn l'édité avec nano
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-remplacer-les-variables-par-les-votres" class="md-nav__link">
+    4.2. Remplacer les variables par les votres.
+  </a>
+  
+    <nav class="md-nav" aria-label="4.2. Remplacer les variables par les votres.">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#421-explication-des-variables" class="md-nav__link">
+    4.2.1 Explication des variables.
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-sauvegarder-et-quitter" class="md-nav__link">
+    4.3. Sauvegarder et quitter
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-lancer-la-stack" class="md-nav__link">
+    5. Lancer la stack
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-verifier-que-tout-est-ok" class="md-nav__link">
+    6. Verifier que tout est ok.
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-reglage-de-plex" class="md-nav__link">
+    7. Réglage de Plex.
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Réglage de Plex.">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-dans-la-section-network-de-plex-cliquez-sur-show-advanced-et-remplissez-les-champs-comme-sur-limage-ci-dessous" class="md-nav__link">
+    7.1. Dans la section Network de Plex, cliquez sur Show Advanced et remplissez les champs comme sur l'image ci-dessous.
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-dans-la-section-remote-access-de-plex-cliquez-sur-disable-remote-access" class="md-nav__link">
+    7.2. Dans la section Remote Access de Plex, cliquez sur Disable Remote Access.
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-verifier-les-reglages-de-cloudflare" class="md-nav__link">
+    8. Verifier les réglages de Cloudflare.
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-optionelle-activation-de-l-igpu-pour-les-processeurs-intel" class="md-nav__link">
+    9. Optionelle : Activation de l' iGPU pour les processeurs Intel.
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Optionelle : Activation de l' iGPU pour les processeurs Intel.">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#91-suivre-la-documentation-hetzner-sur-le-systeme-dexploitation-de-votre-serveur" class="md-nav__link">
+    9.1. Suivre la documentation Hetzner sur le système d'exploitation de votre serveur.
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#92-editer-le-fichier-docker-composeyml" class="md-nav__link">
+    9.2. Editer le fichier docker-compose.yml
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#93-redemarrer-le-container-plex" class="md-nav__link">
+    9.3. Redemarrer le container plex
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10-optionelle-claim-du-server-pour-les-nouvelle-installation" class="md-nav__link">
+    10. Optionelle : Claim du server pour les nouvelle installation.
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Optionelle : Claim du server pour les nouvelle installation.">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#101-preparer-la-variable-claim-token" class="md-nav__link">
+    10.1. Preparer la variable claim token
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#102-recuperer-le-claim-token" class="md-nav__link">
+    10.2. Recuperer le claim token
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#103-enregistrer-et-quitter" class="md-nav__link">
+    10.3. Enregistrer et quitter
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#104-reconstruire-et-re-up-le-container-plex" class="md-nav__link">
+    10.4. Reconstruire et re-up le container plex
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#maintenance-et-mise-a-jour" class="md-nav__link">
+    Maintenance et mise a jour
+  </a>
+  
+    <nav class="md-nav" aria-label="Maintenance et mise a jour">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-arreter-la-stack" class="md-nav__link">
+    1. Arreter la stack
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-mettre-a-jour-les-images" class="md-nav__link">
+    2. Mettre a jour les images
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-redemarrer-la-stack" class="md-nav__link">
+    3. Redemarrer la stack
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../wg-stack/install_server_vps/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    VPS Setup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cree-un-compte-protonvpn-et-recuperer-les-identifiants-dopenvpn-gratuit" class="md-nav__link">
+    Cree un compte ProtonVPN et recuperer les identifiants d'openvpn gratuit
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#procedure-dinstallation-pour-les-utilisateurs-du-script-ssdv2" class="md-nav__link">
+    Procédure d'installation pour les utilisateurs du script SSDV2
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequis" class="md-nav__link">
+    Prérequis
+  </a>
+  
+    <nav class="md-nav" aria-label="Prérequis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#avoir-un-nom-de-domaine-configure-pour-plex-sur-votre-serveur" class="md-nav__link">
+    Avoir un nom de domaine configuré pour plex sur votre serveur.
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installer-docker-et-docker-compose" class="md-nav__link">
+    Installer docker et docker-compose
+  </a>
+  
+    <nav class="md-nav" aria-label="Installer docker et docker-compose">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#veriier-si-docker-compose-est-installe" class="md-nav__link">
+    Vériier si docker-compose est installé
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installer-docker-compose-si-nessessaire" class="md-nav__link">
+    Installer docker-compose si nessessaire
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verifiez-que-votre-ancinen-container-plex-est-bien-stoppe-et-supprimer" class="md-nav__link">
+    Verifiez que votre ancinen container plex est bien stoppé et supprimer.
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-creer-un-dossier-pour-la-stack-plex" class="md-nav__link">
+    1. Creer un dossier pour la stack Plex
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-se-placer-dans-le-dossier" class="md-nav__link">
+    2. Se placer dans le dossier
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-telecharger-le-fichier-docker-composeyml-depuis-le-depot" class="md-nav__link">
+    3. Telecharger le fichier docker-compose.yml depuis le depot
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-cree-et-editer-le-fichier-env" class="md-nav__link">
+    4. Crée et editer le fichier .env
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Crée et editer le fichier .env">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-cree-le-fichier-env-dans-le-dossier-plex_vpn-ledite-avec-nano" class="md-nav__link">
+    4.1. Crée le fichier .env dans le dossier plex_vpn l'édité avec nano
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-remplacer-les-variables-par-les-votres" class="md-nav__link">
+    4.2. Remplacer les variables par les votres.
+  </a>
+  
+    <nav class="md-nav" aria-label="4.2. Remplacer les variables par les votres.">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#421-explication-des-variables" class="md-nav__link">
+    4.2.1 Explication des variables.
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-sauvegarder-et-quitter" class="md-nav__link">
+    4.3. Sauvegarder et quitter
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-lancer-la-stack" class="md-nav__link">
+    5. Lancer la stack
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-verifier-que-tout-est-ok" class="md-nav__link">
+    6. Verifier que tout est ok.
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-reglage-de-plex" class="md-nav__link">
+    7. Réglage de Plex.
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Réglage de Plex.">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-dans-la-section-network-de-plex-cliquez-sur-show-advanced-et-remplissez-les-champs-comme-sur-limage-ci-dessous" class="md-nav__link">
+    7.1. Dans la section Network de Plex, cliquez sur Show Advanced et remplissez les champs comme sur l'image ci-dessous.
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-dans-la-section-remote-access-de-plex-cliquez-sur-disable-remote-access" class="md-nav__link">
+    7.2. Dans la section Remote Access de Plex, cliquez sur Disable Remote Access.
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-verifier-les-reglages-de-cloudflare" class="md-nav__link">
+    8. Verifier les réglages de Cloudflare.
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-optionelle-activation-de-l-igpu-pour-les-processeurs-intel" class="md-nav__link">
+    9. Optionelle : Activation de l' iGPU pour les processeurs Intel.
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Optionelle : Activation de l' iGPU pour les processeurs Intel.">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#91-suivre-la-documentation-hetzner-sur-le-systeme-dexploitation-de-votre-serveur" class="md-nav__link">
+    9.1. Suivre la documentation Hetzner sur le système d'exploitation de votre serveur.
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#92-editer-le-fichier-docker-composeyml" class="md-nav__link">
+    9.2. Editer le fichier docker-compose.yml
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#93-redemarrer-le-container-plex" class="md-nav__link">
+    9.3. Redemarrer le container plex
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10-optionelle-claim-du-server-pour-les-nouvelle-installation" class="md-nav__link">
+    10. Optionelle : Claim du server pour les nouvelle installation.
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Optionelle : Claim du server pour les nouvelle installation.">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#101-preparer-la-variable-claim-token" class="md-nav__link">
+    10.1. Preparer la variable claim token
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#102-recuperer-le-claim-token" class="md-nav__link">
+    10.2. Recuperer le claim token
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#103-enregistrer-et-quitter" class="md-nav__link">
+    10.3. Enregistrer et quitter
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#104-reconstruire-et-re-up-le-container-plex" class="md-nav__link">
+    10.4. Reconstruire et re-up le container plex
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#maintenance-et-mise-a-jour" class="md-nav__link">
+    Maintenance et mise a jour
+  </a>
+  
+    <nav class="md-nav" aria-label="Maintenance et mise a jour">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-arreter-la-stack" class="md-nav__link">
+    1. Arreter la stack
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-mettre-a-jour-les-images" class="md-nav__link">
+    2. Mettre a jour les images
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-redemarrer-la-stack" class="md-nav__link">
+    3. Redemarrer la stack
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="installations-de-plex-sous-vpn-avec-gluetun">Installations de Plex sous VPN avec Gluetun</h1>
+<p>Ce guide explique comment installer Plex sous VPN avec Gluetun. En utilisant un VPN gratuit : <a href="https://protonvpn.com/">ProtonVPN</a>.</p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>La configuration dans se guide met le container plex dans le meme reseau que gluetun. Cela permet d'est sous VPN mais d'étre accessible depuis le reseau local. <strong>Donc les stream ne passent pas par le VPN.</strong></p>
+</div>
+<p>Il est destiné aux utilisateurs de <a href="https://github.com/projetssd/ssdv2">SSDV2</a> et n'est pas supporté officiellement par le projet.</p>
+<pre class="mermaid"><code>flowchart LR
+    A[USER 1\n STREAM] --&gt;|HTTPS by Cloudflare| B(TRAEFIK)
+    A2[USER 2\n STREAM] --&gt;|HTTPS by Cloudflare| B(TRAEFIK)
+    A3[USER 3\n STREAM] --&gt;|HTTPS by Cloudflare| B(TRAEFIK)
+    subgraph local [LOCAL DOCKER]
+    B(TRAEFIK)
+    B --&gt;|32400 on local| ide1
+    subgraph ide1 [VPN GLUETUN NETWORK]
+    C{PLEX \nCONTAINER} ---|network_mode| D(GLUETUN \nCONTAINER)
+    end
+    end
+    subgraph net [NET OUTSIDE WORLD]
+    E[API\n plex.tv]
+    F[IP\n CHECK]
+    end
+    ide1 --&gt;|api| net
+    ide1 --&gt;|posters| net
+    ide1 --&gt;|ipcheck| net</code></pre>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Plex n'utilise que trés peu de bande passante. Donc vous pouvez utiliser un VPN gratuit avec une bande passante limité sans probléme.</p>
+<details class="example">
+<summary>Exemple</summary>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="w">    </span>ens160<span class="w">  </span>/<span class="w">  </span>daily
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span>day<span class="w">        </span>rx<span class="w">      </span><span class="p">|</span><span class="w">     </span>tx<span class="w">      </span><span class="p">|</span><span class="w">    </span>total<span class="w">    </span><span class="p">|</span><span class="w">   </span>avg.<span class="w"> </span>rate
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>------------------------+-------------+-------------+---------------
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="m">2023</span>-09-16<span class="w">    </span><span class="m">36</span>.50<span class="w"> </span>MiB<span class="w"> </span><span class="p">|</span><span class="w">   </span><span class="m">45</span>.33<span class="w"> </span>MiB<span class="w"> </span><span class="p">|</span><span class="w">   </span><span class="m">81</span>.83<span class="w"> </span>MiB<span class="w"> </span><span class="p">|</span><span class="w">    </span><span class="m">7</span>.95<span class="w"> </span>kbit/s
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="m">2023</span>-09-17<span class="w">    </span><span class="m">92</span>.84<span class="w"> </span>MiB<span class="w"> </span><span class="p">|</span><span class="w">   </span><span class="m">85</span>.11<span class="w"> </span>MiB<span class="w"> </span><span class="p">|</span><span class="w">  </span><span class="m">177</span>.95<span class="w"> </span>MiB<span class="w"> </span><span class="p">|</span><span class="w">   </span><span class="m">17</span>.28<span class="w"> </span>kbit/s
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="m">2023</span>-09-18<span class="w">   </span><span class="m">127</span>.20<span class="w"> </span>MiB<span class="w"> </span><span class="p">|</span><span class="w">  </span><span class="m">135</span>.48<span class="w"> </span>MiB<span class="w"> </span><span class="p">|</span><span class="w">  </span><span class="m">262</span>.69<span class="w"> </span>MiB<span class="w"> </span><span class="p">|</span><span class="w">   </span><span class="m">25</span>.50<span class="w"> </span>kbit/s
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="m">2023</span>-09-19<span class="w">   </span><span class="m">222</span>.37<span class="w"> </span>MiB<span class="w"> </span><span class="p">|</span><span class="w">  </span><span class="m">284</span>.93<span class="w"> </span>MiB<span class="w"> </span><span class="p">|</span><span class="w">  </span><span class="m">507</span>.30<span class="w"> </span>MiB<span class="w"> </span><span class="p">|</span><span class="w">   </span><span class="m">49</span>.25<span class="w"> </span>kbit/s
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="m">2023</span>-09-20<span class="w">   </span><span class="m">425</span>.00<span class="w"> </span>MiB<span class="w"> </span><span class="p">|</span><span class="w">  </span><span class="m">345</span>.23<span class="w"> </span>MiB<span class="w"> </span><span class="p">|</span><span class="w">  </span><span class="m">770</span>.23<span class="w"> </span>MiB<span class="w"> </span><span class="p">|</span><span class="w">   </span><span class="m">74</span>.78<span class="w"> </span>kbit/s
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="m">2023</span>-09-21<span class="w">   </span><span class="m">229</span>.13<span class="w"> </span>MiB<span class="w"> </span><span class="p">|</span><span class="w">  </span><span class="m">219</span>.93<span class="w"> </span>MiB<span class="w"> </span><span class="p">|</span><span class="w">  </span><span class="m">449</span>.06<span class="w"> </span>MiB<span class="w"> </span><span class="p">|</span><span class="w">   </span><span class="m">43</span>.60<span class="w"> </span>kbit/s
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="m">2023</span>-09-22<span class="w">   </span><span class="m">220</span>.43<span class="w"> </span>MiB<span class="w"> </span><span class="p">|</span><span class="w">  </span><span class="m">212</span>.48<span class="w"> </span>MiB<span class="w"> </span><span class="p">|</span><span class="w">  </span><span class="m">432</span>.91<span class="w"> </span>MiB<span class="w"> </span><span class="p">|</span><span class="w">   </span><span class="m">42</span>.03<span class="w"> </span>kbit/s
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="m">2023</span>-09-23<span class="w">   </span><span class="m">175</span>.82<span class="w"> </span>MiB<span class="w"> </span><span class="p">|</span><span class="w">  </span><span class="m">169</span>.01<span class="w"> </span>MiB<span class="w"> </span><span class="p">|</span><span class="w">  </span><span class="m">344</span>.83<span class="w"> </span>MiB<span class="w"> </span><span class="p">|</span><span class="w">   </span><span class="m">33</span>.48<span class="w"> </span>kbit/s
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="m">2023</span>-09-24<span class="w">   </span><span class="m">124</span>.10<span class="w"> </span>MiB<span class="w"> </span><span class="p">|</span><span class="w">  </span><span class="m">110</span>.24<span class="w"> </span>MiB<span class="w"> </span><span class="p">|</span><span class="w">  </span><span class="m">234</span>.33<span class="w"> </span>MiB<span class="w"> </span><span class="p">|</span><span class="w">   </span><span class="m">22</span>.75<span class="w"> </span>kbit/s
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="m">2023</span>-09-25<span class="w">   </span><span class="m">117</span>.24<span class="w"> </span>MiB<span class="w"> </span><span class="p">|</span><span class="w">  </span><span class="m">111</span>.70<span class="w"> </span>MiB<span class="w"> </span><span class="p">|</span><span class="w">  </span><span class="m">228</span>.94<span class="w"> </span>MiB<span class="w"> </span><span class="p">|</span><span class="w">   </span><span class="m">29</span>.23<span class="w"> </span>kbit/s
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>------------------------+-------------+-------------+---------------
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>estimated<span class="w">    </span><span class="m">154</span>.17<span class="w"> </span>MiB<span class="w"> </span><span class="p">|</span><span class="w">  </span><span class="m">146</span>.83<span class="w"> </span>MiB<span class="w"> </span><span class="p">|</span><span class="w">  </span><span class="m">301</span>.00<span class="w"> </span>MiB<span class="w"> </span><span class="p">|</span>
+</span></code></pre></div>
+</details>
+</div>
+<hr />
+<h2 id="cree-un-compte-protonvpn-et-recuperer-les-identifiants-dopenvpn-gratuit">Cree un compte ProtonVPN et recuperer les identifiants d'openvpn gratuit</h2>
+<ol>
+<li>Creer un compte ProtonVPN <a href="https://account.protonvpn.com/signup">ici</a></li>
+<li>Recuperer les identifiants d'openvpn gratuit <a href="https://account.proton.me/u/0/vpn/OpenVpnIKEv2">ici</a></li>
+</ol>
+<hr />
+<h2 id="procedure-dinstallation-pour-les-utilisateurs-du-script-ssdv2">Procédure d'installation pour les utilisateurs du script SSDV2</h2>
+<div class="admonition warning">
+<p class="admonition-title">Attention</p>
+<p>Cette procédure est destiné aux utilisateurs du script SSDV2. Si vous n'utilisez pas le script SSDV2, vous devez adapter les chemins de cette procédure à votre installation.</p>
+</div>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>Veillez à bien remplacer les variables par les votres. Chaque installation est unique donc bien verifier les chemins et les ports. <strong>Surtout stopper votre ancien container plex</strong></p>
+</div>
+<h2 id="prerequis">Prérequis</h2>
+<h3 id="avoir-un-nom-de-domaine-configure-pour-plex-sur-votre-serveur">Avoir un nom de domaine configuré pour plex sur votre serveur.</h3>
+<p>Les utlisateurs de cloudflare deveront impérativement suivre la partie 8 pour bypass le cache. Nous allons faire passer le traffic des stream par le proxy cloudflare, donc si le cache est activé vous risquez d'avoir des erreurs de lecture et un ban de leur service.</p>
+<h3 id="installer-docker-et-docker-compose">Installer docker et docker-compose</h3>
+<p>Docker et installé par defaut sur SSDV2, mais ce n'est pas le cas de docker compose.</p>
+<h4 id="veriier-si-docker-compose-est-installe">Vériier si docker-compose est installé</h4>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>version
+</span></code></pre></div>
+<h4 id="installer-docker-compose-si-nessessaire">Installer docker-compose si nessessaire</h4>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>docker-compose-plugin
+</span></code></pre></div>
+<h3 id="verifiez-que-votre-ancinen-container-plex-est-bien-stoppe-et-supprimer">Verifiez que votre ancinen container plex est bien stoppé et supprimer.</h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Inutil si vous n'aviez pas d'ancien container plex. Donc en cas de nouvelle installation.</p>
+</div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>docker<span class="w"> </span>inspect<span class="w"> </span>-f<span class="w"> </span><span class="s1">&#39;{{.State.Status}}&#39;</span><span class="w"> </span>plex
+</span></code></pre></div>
+<p>Si vous voyez <code>running</code> ou <code>restarting</code> vous devez stopper votre ancien container plex.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>docker<span class="w"> </span>stop<span class="w"> </span>plex<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>docker<span class="w"> </span>rm<span class="w"> </span>plex
+</span></code></pre></div>
+<hr />
+<h2 id="installation">Installation</h2>
+<h3 id="1-creer-un-dossier-pour-la-stack-plex">1. Creer un dossier pour la stack Plex</h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>mkdir<span class="w"> </span>-p<span class="w"> </span>/home/<span class="nv">$USER</span>/plex_vpn
+</span></code></pre></div>
+<h3 id="2-se-placer-dans-le-dossier">2. Se placer dans le dossier</h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">cd</span><span class="w"> </span>/home/<span class="nv">$USER</span>/plex_vpn
+</span></code></pre></div>
+<h3 id="3-telecharger-le-fichier-docker-composeyml-depuis-le-depot">3. Telecharger le fichier docker-compose.yml depuis le depot</h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>curl<span class="w"> </span>-o<span class="w"> </span>docker-compose.yml<span class="w"> </span>https://raw.githubusercontent.com/LimeDrive/plex_wg_stack/master/deploy/gluetun/ssdv2-gluetun-compose.yml
+</span></code></pre></div>
+<h3 id="4-cree-et-editer-le-fichier-env">4. Crée et editer le fichier .env</h3>
+<h4 id="41-cree-le-fichier-env-dans-le-dossier-plex_vpn-ledite-avec-nano">4.1. Crée le fichier .env dans le dossier plex_vpn l'édité avec nano</h4>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>touch<span class="w"> </span>.env<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>nano<span class="w"> </span>.env
+</span></code></pre></div>
+<h4 id="42-remplacer-les-variables-par-les-votres">4.2. Remplacer les variables par les votres.</h4>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Vous pouvez copier coller le bloc de code ci-dessous et remplacer les variables par les votres.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Attention</p>
+<p>Les $USER sont a remplacer par votre nom d'utilisateur sur votre serveur.</p>
+</div>
+<div class="language-ini highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="na">XID</span><span class="o">=</span><span class="s">1000</span><span class="w"> </span><span class="c1"># (1)</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="na">GLUETUN_TAG</span><span class="o">=</span><span class="s">&#39;latest&#39;</span><span class="w"> </span><span class="c1"># (2)</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="na">PLEX_TAG</span><span class="o">=</span><span class="s">&#39;latest&#39;</span><span class="w"> </span><span class="c1"># (3)</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="na">TZ</span><span class="o">=</span><span class="s">&#39;Europe/Paris&#39;</span><span class="w"> </span><span class="c1"># (4)</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="na">DOMAIN</span><span class="o">=</span><span class="s">&#39;plex.example.com&#39;</span><span class="w"> </span><span class="c1"># (5)</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="na">PATH_PLEX_CONFIG</span><span class="o">=</span><span class="s">&#39;/home/$USER/check/path/plex/config/on/host&#39;</span><span class="w"> </span><span class="c1"># (6)</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="na">PATH_HOME</span><span class="o">=</span><span class="s">&#39;/home/$USER&#39;</span><span class="w"> </span><span class="c1"># (7)</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="na">OPENVPN_USER</span><span class="o">=</span><span class="s">&#39;protonvpn_username&#39;</span><span class="w"> </span><span class="c1"># (8)</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="na">OPENVPN_PASSWORD</span><span class="o">=</span><span class="s">&#39;protonvpn_password&#39;</span><span class="w"> </span><span class="c1"># (9)</span>
+</span></code></pre></div>
+<ol>
+<li>ID de votre utilisateur sur votre serveur</li>
+<li>Image tag de gluetun.</li>
+<li>Image tag de plex.</li>
+<li>Fuseau horaire de votre serveur.</li>
+<li>Nom de domaine que vous avez configuré pour plex sur votre serveur.</li>
+<li>Chemin de votre dossier de configuration plex sur votre serveur.</li>
+<li>Chemin absolu de votre dossier home sur votre serveur.</li>
+<li>Votre nom d'utilisateur ProtonVPN.</li>
+<li>Votre mot de passe ProtonVPN.</li>
+</ol>
+<h5 id="421-explication-des-variables">4.2.1 Explication des variables.</h5>
+<ul>
+<li>
+<p><code>XID</code> : L'ID de votre utilisateur sur votre serveur</p>
+<p><code>id -u $USER</code></p>
+</li>
+<li>
+<p><code>GLUETUN_TAG</code> : La version de gluetun que vous voulez utiliser. <a href="https://hub.docker.com/r/qmcgaw/gluetun/tags?page=1&amp;ordering=last_updated">Voir les versions</a></p>
+<p>default : Vous pouvez utilisé <code>latest</code> pour la derniere version.</p>
+</li>
+<li>
+<p><code>PLEX_TAG</code> : La version de plex que vous voulez utiliser. <a href="https://hub.docker.com/r/linuxserver/plex/tags?page=1&amp;ordering=last_updated">Voir les versions</a></p>
+<p>default : Vous pouvez utilisé <code>latest</code> pour la derniere version.</p>
+</li>
+<li>
+<p><code>TZ</code> : Le fuseau horaire de votre serveur. <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">Voir les fuseaux horaires</a></p>
+<p>default : <code>Europe/Paris</code></p>
+</li>
+<li>
+<p><code>DOMAIN</code> : Le nom de domaine que vous avez configuré <strong>pour plex</strong> sur votre serveur.</p>
+<p>REQUIRED : <code>plex.example.com</code></p>
+</li>
+<li>
+<p><code>PATH_PLEX_CONFIG</code> : Le chemin de votre dossier de configuration plex sur votre serveur.</p>
+<p>REQUIRED : <code>/home/$USER/seedbox/docker/$USER/plex/config</code></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Pour les utilisateurs du scripte SSDV2 :</p>
+<p>nouvelle install : <code>/home/$USER/seedbox/docker/$USER/plex/config</code></p>
+<p>old install : <code>/opt/seedbox/docker/$USER/plex/config</code></p>
+</div>
+</li>
+<li>
+<p><code>PATH_HOME</code> : Le chemin absolu de votre dossier home sur votre serveur.</p>
+<p>REQUIRED : <code>/home/$USER</code></p>
+</li>
+<li>
+<p><code>OPENVPN_USER</code> et <code>OPENVPN_PASSWORD</code> : Votre nom d'utilisateur et pass ProtonVPN</p>
+<p>REQUIRED : <code>1_username</code> et <code>2_password</code></p>
+<p><img alt="ProtonVPN" src="https://imgur.com/2eFcZhg.png" /></p>
+</li>
+</ul>
+<h4 id="43-sauvegarder-et-quitter">4.3. Sauvegarder et quitter</h4>
+<p><span class="keys"><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-x">X</kbd></span> pour quitter et <span class="keys"><kbd class="key-y">Y</kbd></span> pour sauvegarder</p>
+<h3 id="5-lancer-la-stack">5. Lancer la stack</h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+</span></code></pre></div>
+<h3 id="6-verifier-que-tout-est-ok">6. Verifier que tout est ok.</h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>plex<span class="w"> </span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://ipv4.icanhazip.com
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Vous devriez voir l'ip de votre VPN et non celle de votre serveur.</p>
+</div>
+<h3 id="7-reglage-de-plex">7. Réglage de Plex.</h3>
+<div class="admonition warning">
+<p class="admonition-title">Attention</p>
+<p>Si vous faite une nouvelle installation de plex vous devez suivre la partie 10 pour claim le server. Avant de faire les réglages.</p>
+</div>
+<h4 id="71-dans-la-section-network-de-plex-cliquez-sur-show-advanced-et-remplissez-les-champs-comme-sur-limage-ci-dessous">7.1. Dans la section <code>Network</code> de Plex, cliquez sur <code>Show Advanced</code> et remplissez les champs comme sur l'image ci-dessous.</h4>
+<p><img alt="Network" src="https://i.imgur.com/9pjchSV.png" /></p>
+<ol>
+<li>
+<p>Desactivez le relais si vous le souhaiter.</p>
+</li>
+<li>
+<p>Dans URL personnalisée, entrez l'adresse de votre serveur Plex. Entrez l'adresse complète, y compris le protocole (https) et le port (443).</p>
+<p><code>https://plex.example.com:443</code></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Si vous utilisez une connection http sur de vieux appareille ( certaine TV ), entrez l'adresse IP complète en http et le port (80) - optionel.</p>
+<p><code>https://plex.example.com:443,http://plex.example.com:80</code></p>
+</div>
+</li>
+</ol>
+<h4 id="72-dans-la-section-remote-access-de-plex-cliquez-sur-disable-remote-access">7.2. Dans la section <code>Remote Access</code> de Plex, cliquez sur <code>Disable Remote Access</code>.</h4>
+<p>Sa nous assure que Plex ne va pas essayer de se connecter directement à votre serveur. Vous devez voir afficher <code>Not available outside your network</code> comme sur l'image ci-dessous.</p>
+<p><img alt="Remote Access" src="https://i.imgur.com/VtbbBSY.png" /></p>
+<h3 id="8-verifier-les-reglages-de-cloudflare">8. Verifier les réglages de Cloudflare.</h3>
+<p>Avec cloudflare qui proxy votre domaine, vous devez vous assurer que sur le sous-domaine <code>plex.example.com</code> une regle de cache est bien appliqué.</p>
+<p>Sur votre <a href="https://dash.cloudflare.com/">dashboard cloudflare</a> ici :</p>
+<p><img alt="Cloudflare" src="https://i.imgur.com/RAfL6jb.png" /></p>
+<p>Dans les régles de cache, vous devez avoir une regle pour le sous-domaine <code>plex.example.com</code> visible :</p>
+<p><img alt="Rule" src="https://i.imgur.com/7jmE5UC.png" /></p>
+<p><strong>Si vous ne voyez pas de regle, vous devez en créer une.</strong></p>
+<p><img alt="Create Rule" src="https://i.imgur.com/mUpgThY.png" /></p>
+<p><img alt="SetRule" src="https://i.imgur.com/YqaZbD8.png" /></p>
+<h3 id="9-optionelle-activation-de-l-igpu-pour-les-processeurs-intel">9. Optionelle : Activation de l' iGPU pour les processeurs Intel.</h3>
+<div class="admonition warning">
+<p class="admonition-title">Attention</p>
+<p>Cette partie est optionelle et ne concerne que les utilisateurs de processeurs Intel avec un iGPU.</p>
+</div>
+<h4 id="91-suivre-la-documentation-hetzner-sur-le-systeme-dexploitation-de-votre-serveur">9.1. Suivre la documentation Hetzner sur le système d'exploitation de votre serveur.</h4>
+<p>Documentation Hetzner : <a href="https://community.hetzner.com/tutorials/howto-enable-igpu">Enabling the iGPU on Intel Processors</a></p>
+<h4 id="92-editer-le-fichier-docker-composeyml">9.2. Editer le fichier <code>docker-compose.yml</code></h4>
+<p>Agouter les lignes suivantes dans le service <code>plex</code> :</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nn">...</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="nt">plex</span><span class="p">:</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">plexinc/pms-docker:${PLEX_TAG:-latest}</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="hll"><span class="w">    </span><span class="nt">devices</span><span class="p">:</span>
+</span></span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="hll"><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/dev/dri:/dev/dri</span>
+</span></span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="hll"><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/dev/dri:/dev/dri</span>
+</span></span></code></pre></div>
+<h4 id="93-redemarrer-le-container-plex">9.3. Redemarrer le container plex</h4>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>plex
+</span></code></pre></div>
+<h3 id="10-optionelle-claim-du-server-pour-les-nouvelle-installation">10. Optionelle : Claim du server pour les nouvelle installation.</h3>
+<p>Si vous n'aviez pas d'intallation plex avant, vous devez claim le server pour pouvoir l'utiliser.</p>
+<div class="admonition success">
+<p class="admonition-title">Success</p>
+<p><strong>La procedure est a faire en moin de 4 minutes sinon le claim token expire.</strong></p>
+</div>
+<h4 id="101-preparer-la-variable-claim-token">10.1. Preparer la variable claim token</h4>
+<ul>
+<li>Editer le fichier <code>docker-compose.yml</code> :</li>
+</ul>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>nano<span class="w"> </span>docker-compose.yml
+</span></code></pre></div>
+<ul>
+<li>Ajouter la variable <code>PLEX_CLAIM</code> dans le service <code>plex</code> :</li>
+</ul>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="nn">...</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="nt">plex</span><span class="p">:</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">plexinc/pms-docker:${PLEX_TAG:-latest}</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="hll"><span class="w">        </span><span class="nt">PLEX_CLAIM</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;claim-xxxxxxxxxxxxxxxxxxxx&#39;</span><span class="w"> </span><span class="c1"># (1)</span>
+</span></span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</span></code></pre></div>
+<ol>
+<li>Remplacer <code>claim-xxxxxxxxxxxxxxxxxxxx</code> par votre claim token. 
+   Voir la partie 10.2 pour recuperer le claim token.</li>
+</ol>
+<h4 id="102-recuperer-le-claim-token">10.2. Recuperer le claim token</h4>
+<p>Se rendre sur le site de plex <a href="https://www.plex.tv/claim/">ici</a>, se connecter et recuperer le claim token.</p>
+<h4 id="103-enregistrer-et-quitter">10.3. Enregistrer et quitter</h4>
+<p><span class="keys"><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-x">X</kbd></span> pour quitter et <span class="keys"><kbd class="key-y">Y</kbd></span> pour sauvegarder</p>
+<h4 id="104-reconstruire-et-re-up-le-container-plex">10.4. Reconstruire et re-up le container plex</h4>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>rm<span class="w"> </span>-s<span class="w"> </span>plex
+</span></code></pre></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>plex
+</span></code></pre></div>
+<h2 id="maintenance-et-mise-a-jour">Maintenance et mise a jour</h2>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Pour la maintenance et la mise a jour de la stack, mieux vaut utiliser les commandes docker-compose plutot que les commandes docker de ssd.</p>
+</div>
+<h3 id="1-arreter-la-stack">1. Arreter la stack</h3>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">plex</label><label for="__tabbed_1_2">gluetun</label><label for="__tabbed_1_3">plex et gluetun</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="nb">cd</span><span class="w"> </span>/home/<span class="nv">$USER</span>/plex_vpn<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>docker<span class="w"> </span>compose<span class="w"> </span>stop<span class="w"> </span>plex
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="nb">cd</span><span class="w"> </span>/home/<span class="nv">$USER</span>/plex_vpn<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>docker<span class="w"> </span>compose<span class="w"> </span>stop<span class="w"> </span>gluetun
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="nb">cd</span><span class="w"> </span>/home/<span class="nv">$USER</span>/plex_vpn<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>docker<span class="w"> </span>compose<span class="w"> </span>stop
+</span></code></pre></div>
+</div>
+</div>
+</div>
+<h3 id="2-mettre-a-jour-les-images">2. Mettre a jour les images</h3>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:3"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">plex</label><label for="__tabbed_2_2">gluetun</label><label for="__tabbed_2_3">plex et gluetun</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="nb">cd</span><span class="w"> </span>/home/<span class="nv">$USER</span>/plex_vpn<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>docker<span class="w"> </span>compose<span class="w"> </span>pull<span class="w"> </span>plex
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>plex
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="nb">cd</span><span class="w"> </span>/home/<span class="nv">$USER</span>/plex_vpn<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>docker<span class="w"> </span>compose<span class="w"> </span>pull<span class="w"> </span>gluetun
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>gluetun
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="nb">cd</span><span class="w"> </span>/home/<span class="nv">$USER</span>/plex_vpn<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>docker<span class="w"> </span>compose<span class="w"> </span>pull
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+</span></code></pre></div>
+</div>
+</div>
+</div>
+<h3 id="3-redemarrer-la-stack">3. Redemarrer la stack</h3>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:3"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><input id="__tabbed_3_3" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">plex</label><label for="__tabbed_3_2">gluetun</label><label for="__tabbed_3_3">plex et gluetun</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="nb">cd</span><span class="w"> </span>/home/<span class="nv">$USER</span>/plex_vpn<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>docker<span class="w"> </span>compose<span class="w"> </span>restart<span class="w"> </span>plex
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="nb">cd</span><span class="w"> </span>/home/<span class="nv">$USER</span>/plex_vpn<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>docker<span class="w"> </span>compose<span class="w"> </span>restart<span class="w"> </span>gluetun
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="nb">cd</span><span class="w"> </span>/home/<span class="nv">$USER</span>/plex_vpn<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>docker<span class="w"> </span>compose<span class="w"> </span>restart
+</span></code></pre></div>
+</div>
+</div>
+</div>
+<hr />
+<p>enjoy !</p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "content.code.select", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.aecac24b.min.js"></script>
+      
+    
+  </body>
+</html>
