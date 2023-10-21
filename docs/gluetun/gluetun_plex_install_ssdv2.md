@@ -369,6 +369,74 @@ docker compose rm -s plex
 docker compose up -d plex
 ```
 
+## Maintenance et mise a jour
+
+!!! tip "Tip"
+
+    Pour la maintenance et la mise a jour de la stack, mieux vaut utiliser les commandes docker-compose plutot que les commandes docker de ssd.
+
+### 1. Arreter la stack
+
+=== "plex"
+
+    ```bash
+    cd /home/$USER/plex_vpn && docker compose stop plex
+    ```
+
+=== "gluetun"
+
+    ```bash
+    cd /home/$USER/plex_vpn && docker compose stop gluetun
+    ```
+
+=== "plex et gluetun"
+
+    ```bash
+    cd /home/$USER/plex_vpn && docker compose stop
+    ```
+
+### 2. Mettre a jour les images
+
+=== "plex"
+
+    ```bash
+    cd /home/$USER/plex_vpn && docker compose pull plex
+    docker compose up -d plex
+    ```
+
+=== "gluetun"
+
+    ```bash
+    cd /home/$USER/plex_vpn && docker compose pull gluetun
+    docker compose up -d gluetun
+    ```
+
+=== "plex et gluetun"
+
+    ```bash
+    cd /home/$USER/plex_vpn && docker compose pull
+    docker compose up -d
+    ```
+
+### 3. Redemarrer la stack
+
+=== "plex"
+
+    ```bash
+    cd /home/$USER/plex_vpn && docker compose restart plex
+    ```
+
+=== "gluetun"
+
+    ```bash
+    cd /home/$USER/plex_vpn && docker compose restart gluetun
+    ```
+
+=== "plex et gluetun"
+
+    ```bash
+    cd /home/$USER/plex_vpn && docker compose restart
+    ```
 
 ---
 
