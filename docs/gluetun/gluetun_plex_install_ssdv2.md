@@ -2,7 +2,56 @@
 
 Ce guide explique comment installer Plex sous VPN avec Gluetun. En utilisant un VPN gratuit : [ProtonVPN](https://protonvpn.com/).
 
+!!! info "Info"
+
+    La configuration dans se guide met le container plex dans le meme reseau que gluetun. Cela permet d'est sous VPN mais d'étre accessible depuis le reseau local. **Donc les stream ne passent pas par le VPN.**
+
 Il est destiné aux utilisateurs de [SSDV2](https://github.com/projetssd/ssdv2) et n'est pas supporté officiellement par le projet.
+
+```mermaid
+flowchart LR
+    A[USER 1\n STREAM] -->|HTTPS by Cloudflare| B(TRAEFIK)
+    A2[USER 2\n STREAM] -->|HTTPS by Cloudflare| B(TRAEFIK)
+    A3[USER 3\n STREAM] -->|HTTPS by Cloudflare| B(TRAEFIK)
+    subgraph local [LOCAL DOCKER]
+    B(TRAEFIK)
+    B -->|32400 on local| ide1
+    subgraph ide1 [VPN GLUETUN NETWORK]
+    C{PLEX \nCONTAINER} ---|network_mode| D(GLUETUN \nCONTAINER)
+    end
+    end
+    subgraph net [NET OUTSIDE WORLD]
+    E[API\n plex.tv]
+    F[IP\n CHECK]
+    end
+    ide1 -->|api| net
+    ide1 -->|posters| net
+    ide1 -->|ipcheck| net
+```
+
+!!! note "Note"
+
+    Plex n'utilise que trés peu de bande passante. Donc vous pouvez utiliser un VPN gratuit avec une bande passante limité sans probléme.
+
+    ??? example "Exemple"
+
+        ```bash
+            ens160  /  daily
+            day        rx      |     tx      |    total    |   avg. rate
+        ------------------------+-------------+-------------+---------------
+        2023-09-16    36.50 MiB |   45.33 MiB |   81.83 MiB |    7.95 kbit/s
+        2023-09-17    92.84 MiB |   85.11 MiB |  177.95 MiB |   17.28 kbit/s
+        2023-09-18   127.20 MiB |  135.48 MiB |  262.69 MiB |   25.50 kbit/s
+        2023-09-19   222.37 MiB |  284.93 MiB |  507.30 MiB |   49.25 kbit/s
+        2023-09-20   425.00 MiB |  345.23 MiB |  770.23 MiB |   74.78 kbit/s
+        2023-09-21   229.13 MiB |  219.93 MiB |  449.06 MiB |   43.60 kbit/s
+        2023-09-22   220.43 MiB |  212.48 MiB |  432.91 MiB |   42.03 kbit/s
+        2023-09-23   175.82 MiB |  169.01 MiB |  344.83 MiB |   33.48 kbit/s
+        2023-09-24   124.10 MiB |  110.24 MiB |  234.33 MiB |   22.75 kbit/s
+        2023-09-25   117.24 MiB |  111.70 MiB |  228.94 MiB |   29.23 kbit/s
+        ------------------------+-------------+-------------+---------------
+        estimated    154.17 MiB |  146.83 MiB |  301.00 MiB |
+        ```
 
 ---
 
@@ -92,7 +141,6 @@ curl -o docker-compose.yml https://raw.githubusercontent.com/LimeDrive/plex_wg_s
 ```bash
 touch .env && nano .env
 ```
----
     
 #### 4.2. Remplacer les variables par les votres.
 
@@ -105,17 +153,28 @@ touch .env && nano .env
     Les $USER sont a remplacer par votre nom d'utilisateur sur votre serveur.
 
 ```ini
-XID=1000
-GLUETUN_TAG='latest'
-PLEX_TAG='latest'
-TZ='Europe/Paris'
-DOMAIN='plex.example.com'
-PATH_PLEX_CONFIG='/home/$USER/check/path/plex/config/on/host'
-PATH_HOME='/home/$USER'
-OPENVPN_USER='protonvpn_username'
-OPENVPN_PASSWORD='protonvpn_password'
+XID=1000 # (1)
+GLUETUN_TAG='latest' # (2)
+PLEX_TAG='latest' # (3)
+TZ='Europe/Paris' # (4)
+DOMAIN='plex.example.com' # (5)
+PATH_PLEX_CONFIG='/home/$USER/check/path/plex/config/on/host' # (6)
+PATH_HOME='/home/$USER' # (7)
+OPENVPN_USER='protonvpn_username' # (8)
+OPENVPN_PASSWORD='protonvpn_password' # (9)
 ```
-##### 4.2.0 Explication des variables.
+
+1. ID de votre utilisateur sur votre serveur
+2. Image tag de gluetun.
+3. Image tag de plex.
+4. Fuseau horaire de votre serveur.
+5. Nom de domaine que vous avez configuré pour plex sur votre serveur.
+6. Chemin de votre dossier de configuration plex sur votre serveur.
+7. Chemin absolu de votre dossier home sur votre serveur.
+8. Votre nom d'utilisateur ProtonVPN.
+9. Votre mot de passe ProtonVPN.
+
+##### 4.2.1 Explication des variables.
 
 - `XID` : L'ID de votre utilisateur sur votre serveur
 
@@ -159,9 +218,9 @@ OPENVPN_PASSWORD='protonvpn_password'
 
     ![ProtonVPN](https://imgur.com/2eFcZhg.png)
 
-##### 4.3. Sauvegarder et quitter
+#### 4.3. Sauvegarder et quitter
 
-`ctrl` + `x` pour quitter et `y` pour sauvegarder
+++ctrl+x++ pour quitter et ++y++ pour sauvegarder
 
 
 ### 5. Lancer la stack
@@ -242,7 +301,7 @@ Documentation Hetzner : [Enabling the iGPU on Intel Processors](https://communit
 
 Agouter les lignes suivantes dans le service `plex` :
 
-```yaml
+```yaml hl_lines="5 6 9"
 ...
 plex:
     image: plexinc/pms-docker:${PLEX_TAG:-latest}
@@ -266,7 +325,7 @@ Si vous n'aviez pas d'intallation plex avant, vous devez claim le server pour po
 
 !!! success "Success"
 
-    La procedure est a faire en moin de 4 minutes sinon le claim token expire.
+    **La procedure est a faire en moin de 4 minutes sinon le claim token expire.**
 
 #### 10.1. Preparer la variable claim token
 
@@ -278,15 +337,19 @@ nano docker-compose.yml
 
 - Ajouter la variable `PLEX_CLAIM` dans le service `plex` :
 
-```yaml
+```yaml hl_lines="6"
 ...
 plex:
     image: plexinc/pms-docker:${PLEX_TAG:-latest}
     ...
     environment:
-    ...
-    PLEX_CLAIM: 'claim-xxxxxxxxxxxxxxxxxxxx' # claim token voir 10.2 ci-dessous 
+        PLEX_CLAIM: 'claim-xxxxxxxxxxxxxxxxxxxx' # (1)
+        ...
 ```
+
+1. Remplacer `claim-xxxxxxxxxxxxxxxxxxxx` par votre claim token. 
+   Voir la partie 10.2 pour recuperer le claim token.
+
 
 #### 10.2. Recuperer le claim token
 
@@ -294,7 +357,7 @@ Se rendre sur le site de plex [ici](https://www.plex.tv/claim/), se connecter et
 
 #### 10.3. Enregistrer et quitter
 
-`ctrl` + `x` pour quitter et `y` pour sauvegarder
+++ctrl+x++ pour quitter et ++y++ pour sauvegarder
 
 #### 10.4. Reconstruire et re-up le container plex
 

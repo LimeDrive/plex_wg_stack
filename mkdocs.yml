@@ -12,6 +12,7 @@ nav:
 theme:
   icon:
     repo: fontawesome/brands/github 
+    annotation: material/arrow-right-circle
   name: material
   palette:
     - scheme: default
@@ -34,12 +35,19 @@ theme:
     - content.code.annotate
 
 markdown_extensions:
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
   - pymdownx.highlight:
       anchor_linenums: true
       line_spans: __span
       pygments_lang_class: true
   - pymdownx.inlinehilite
   - pymdownx.snippets
-  - pymdownx.superfences
+  - pymdownx.keys
   - admonition
   - pymdownx.details
